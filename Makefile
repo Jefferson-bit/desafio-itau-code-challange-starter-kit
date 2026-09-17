@@ -67,6 +67,10 @@ kafka-up: ## Start Redpanda + Console and (re)seed the greeting-templates topic
 kafka-seed: ## Re-run the seed job (topic creation is idempotent, messages are re-published)
 	$(COMPOSE) up redpanda-seed
 
+.PHONY: kafka-seed-transaction-finance
+kafka-seed-transaction-finance: ## Create transaction-finance-process (+ its -dlt topic) and publish sample transaction/account events
+	$(COMPOSE) run --rm --entrypoint /bin/bash redpanda-seed /redpanda-seed/seed-transaction-finance.sh
+
 .PHONY: kafka-topic-create
 kafka-topic-create: ## Create a Kafka topic on Redpanda (usage: make kafka-topic-create NAME=my-topic [PARTITIONS=3])
 	@if [ -z "$(NAME)" ]; then \

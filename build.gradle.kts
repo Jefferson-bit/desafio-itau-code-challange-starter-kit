@@ -27,6 +27,9 @@ dependencies {
 	implementation("tools.jackson.module:jackson-module-kotlin")
 	implementation("software.amazon.awssdk:dynamodb")
 	implementation("org.springframework.boot:spring-boot-starter-kafka")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("com.lemonappdev:konsist:0.17.3")
@@ -53,6 +56,12 @@ sourceSets {
 configurations["integrationTestImplementation"].extendsFrom(configurations.testImplementation.get())
 configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
 
+dependencies {
+	"integrationTestImplementation"(platform("org.testcontainers:testcontainers-bom:1.20.4"))
+	"integrationTestImplementation"("org.springframework.boot:spring-boot-testcontainers")
+	"integrationTestImplementation"("org.testcontainers:junit-jupiter")
+	"integrationTestImplementation"("org.testcontainers:kafka")
+}
 val integrationTest =
 	tasks.register<Test>("integrationTest") {
 		description = "Runs integration tests against live infrastructure (start it first with `make db-up`)."

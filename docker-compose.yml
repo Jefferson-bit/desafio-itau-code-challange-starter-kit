@@ -8,9 +8,9 @@ services:
     environment:
       DYNAMODB_ENDPOINT: http://dynamodb:8000
       DYNAMODB_REGION: us-east-1
-      GREETING_TABLE_NAME: GreetingMessages
+      TRANSACTION_FINANCE_TABLE_NAME: TransactionFinance
       KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
-      GREETING_TEMPLATES_TOPIC: greeting-templates
+      TRANSACTION_FINANCE_PROCESS_TOPIC: transaction-finance-process
     depends_on:
       - dynamodb
       - dynamodb-seed
@@ -34,9 +34,10 @@ services:
       AWS_DEFAULT_REGION: us-east-1
       DYNAMODB_ENDPOINT_URL: http://dynamodb:8000
       GREETING_TABLE_NAME: GreetingMessages
+      TRANSACTION_FINANCE_TABLE_NAME: TransactionFinance
     volumes:
       - ./infra/dynamodb:/dynamodb-seed:ro
-    entrypoint: ["/bin/bash", "/dynamodb-seed/seed.sh"]
+    entrypoint: ["/bin/bash", "-c", "/dynamodb-seed/seed.sh && /dynamodb-seed/seed-transaction-finance.sh"]
 
   dynamodb-admin:
     image: aaronshaf/dynamodb-admin:5.3.4
@@ -75,9 +76,10 @@ services:
     environment:
       REDPANDA_BROKERS: redpanda:9092
       GREETING_TEMPLATES_TOPIC: greeting-templates
+      TRANSACTION_FINANCE_PROCESS_TOPIC: transaction-finance-process
     volumes:
       - ./infra/redpanda:/redpanda-seed:ro
-    entrypoint: ["/bin/bash", "-c", "/redpanda-seed/config.sh && /redpanda-seed/seed.sh"]
+    entrypoint: ["/bin/bash", "-c", "/redpanda-seed/config.sh && /redpanda-seed/seed.sh && /redpanda-seed/seed-transaction-finance.sh"]
 
   redpanda-console:
     image: docker.redpanda.com/redpandadata/console:v3.9.0
