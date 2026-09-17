@@ -89,7 +89,7 @@ Depois do seed, essas contas já têm saldo consultável (a app precisa estar ro
 | `c3d4e5f6-a7b8-4901-c2d3-e4f5a6b7c8d9` | R$ 15.000,00 | 1 transação |
 
 ```bash
-curl http://localhost:8181/balances/5b19c8b6-0cc4-4c72-a989-0c2ee15fa975
+curl http://localhost:8080/balances/5b19c8b6-0cc4-4c72-a989-0c2ee15fa975
 ```
 
 ### Gerando dados aleatórios (além do seed fixo)
@@ -117,18 +117,18 @@ make kafka-produce-transactions-events TOPIC=transaction-finance-process COUNT=5
 | `400` | `accountId` não é um UUID válido |
 
 ```bash
-curl http://localhost:8181/balances/5b19c8b6-0cc4-4c72-a989-0c2ee15fa975
+curl http://localhost:8080/balances/5b19c8b6-0cc4-4c72-a989-0c2ee15fa975
 ```
 
 ### Swagger / OpenAPI
 
-- UI: `http://localhost:8181/swagger-ui/index.html`
-- JSON: `http://localhost:8181/v3/api-docs`
+- UI: `http://localhost:8080/swagger-ui/index.html`
+- JSON: `http://localhost:8080/v3/api-docs`
 
 ## Observabilidade
 
-- Health: `http://localhost:8181/actuator/health`
-- Métricas Prometheus: `http://localhost:8181/actuator/prometheus`
+- Health: `http://localhost:8080/actuator/health`
+- Métricas Prometheus: `http://localhost:8080/actuator/prometheus`
 - Logs estruturados no padrão 5W (`who/what/where/when/why`), ex:
   ```
   who=system what="Transaction Finance saved with success" where=DynamoDbTransactionFinance when=... why="<accountId>, <transactionId>"
